@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instruções de Conciliação - Instituto Brasileiro Campeão</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="conciliacao.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <!-- Cabeçalho -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="assets/logo.png" alt="Instituto Brasileiro Campeão" class="logo-img">
+            </div>
+            <h1>Sistema de Gestão Financeira</h1>
+            <div class="user-info">
+                <span class="user-name">Usuário</span>
+                <a href="#" class="logout-btn">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Menu de navegação -->
+    <nav class="main-nav">
+        <div class="container">
+            <ul class="nav-list">
+                <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+                <li><a href="entradas.html"><i class="fas fa-arrow-circle-down"></i> Entradas</a></li>
+                <li><a href="saidas.html"><i class="fas fa-arrow-circle-up"></i> Saídas</a></li>
+                <li><a href="conciliacao.html" class="active"><i class="fas fa-balance-scale"></i> Conciliação</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Conteúdo principal -->
+    <main class="main-content">
+        <div class="container">
+            <h1 class="page-title"><i class="fas fa-book"></i> Instruções de Conciliação</h1>
+            
+            <div class="instrucoes-container">
+                <div class="card">
+                    <h2>O que é Conciliação?</h2>
+                    
+                    <p>
+                        A <strong>conciliação</strong> é o processo de verificar se os registros internos do Instituto estão alinhados com os registros externos (como extratos bancários) 
+                        ou com a realidade física (como o estoque de materiais). Este processo é fundamental para garantir a transparência, 
+                        precisão e confiabilidade das prestações de contas.
+                    </p>
+                    
+                    <div class="instrucoes-grid">
+                        <div class="instrucao-card instrucao-card-blue">
+                            <h3><i class="fas fa-money-bill-wave"></i> Conciliação Financeira</h3>
+                            <p>
+                                Verifica se os lançamentos financeiros registrados no sistema (entradas e saídas) correspondem 
+                                aos lançamentos do extrato bancário, garantindo que todo dinheiro que entrou ou saiu foi 
+                                devidamente registrado e categorizado.
+                            </p>
+                        </div>
+                        
+                        <div class="instrucao-card instrucao-card-green">
+                            <h3><i class="fas fa-box"></i> Conciliação de Bens</h3>
+                            <p>
+                                Verifica se os registros de entrada e saída de materiais (doações físicas, equipamentos, etc.) 
+                                estão corretos, garantindo que todo material recebido foi devidamente registrado e que as 
+                                distribuições correspondem ao que foi recebido.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="instrucao-card instrucao-card-yellow">
+                        <h3><i class="fas fa-exclamation-circle"></i> Por que é importante?</h3>
+                        <ul>
+                            <li>Garante transparência na prestação de contas</li>
+                            <li>Identifica erros, omissões ou fraudes</li>
+                            <li>Assegura que todos os recursos foram utilizados conforme planejado</li>
+                            <li>Facilita auditorias e fiscalizações</li>
+                            <li>Melhora a gestão financeira e de recursos do Instituto</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2>Como Realizar a Conciliação</h2>
+                    
+                    <div class="instrucoes-section">
+                        <h3>Conciliação Financeira</h3>
+                        
+                        <ol>
+                            <li>
+                                <strong>Importe os dados necessários:</strong>
+                                <ul>
+                                    <li>Registros de entradas financeiras (doações recebidas)</li>
+                                    <li>Registros de saídas financeiras (pagamentos realizados)</li>
+                                    <li>Extrato bancário (exportado do seu banco)</li>
+                                </ul>
+                            </li>
+                            
+                            <li>
+                                <strong>Analise o resultado da conciliação automática:</strong>
+                                <ul>
+                                    <li><span class="status-tag status-conciliado"><i class="fas fa-check-circle"></i> Conciliado:</span> Lançamentos que possuem correspondência exata no extrato</li>
+                                    <li><span class="status-tag status-pendente"><i class="fas fa-clock"></i> Pendente:</span> Lançamentos internos sem correspondência no extrato</li>
+                                    <li><span class="status-tag status-divergente"><i class="fas fa-exclamation-triangle"></i> Divergente:</span> Lançamentos com valores diferentes entre sistema e extrato</li>
+                                    <li><span class="status-tag status-nao-identificado"><i class="fas fa-question-circle"></i> Não identificado:</span> Lançamentos no extrato sem registro interno</li>
+                                </ul>
+                            </li>
+                            
+                            <li>
+                                <strong>Resolva as divergências:</strong>
+                                <ul>
+                                    <li>Para lançamentos pendentes: verifique se o pagamento/recebimento foi realmente efetivado</li>
+                                    <li>Para lançamentos não identificados: registre-os no sistema interno</li>
+                                    <li>Para taxas bancárias: registre-as como despesas administrativas</li>
+                                    <li>Para divergências de valor: corrija o valor no sistema interno</li>
+                                </ul>
+                            </li>
+                            
+                            <li>
+                                <strong>Exporte o relatório de conciliação:</strong>
+                                <p>
+                                    Após resolver todas as divergências, exporte o relatório final para documentação e prestação de contas.
+                                </p>
+                            </li>
+                        </ol>
+                    </div>
+                    
+                    <div class="instrucoes-section">
+                        <h3>Conciliação de Bens</h3>
+                        
+                        <ol>
+                            <li>
+                                <strong>Importe os dados de estoque:</strong>
+                                <ul>
+                                    <li>Registros de entradas de materiais (doações recebidas)</li>
+                                    <li>Registros de saídas de materiais (distribuições realizadas)</li>
+                                </ul>
+                            </li>
+                            
+                            <li>
+                                <strong>Analise o resultado da conciliação automática:</strong>
+                                <ul>
+                                    <li><span class="status-tag status-conciliado"><i class="fas fa-check-circle"></i> Conciliado:</span> Itens com entradas e saídas balanceadas</li>
+                                    <li><span class="status-tag status-pendente"><i class="fas fa-clock"></i> Pendente:</span> Itens com mais entradas que saídas (estoque disponível)</li>
+                                    <li><span class="status-tag status-divergente"><i class="fas fa-exclamation-triangle"></i> Divergente:</span> Itens com mais saídas que entradas (saldo negativo)</li>
+                                </ul>
+                            </li>
+                            
+                            <li>
+                                <strong>Resolva as divergências:</strong>
+                                <ul>
+                                    <li>Para itens pendentes: verifique se o estoque físico corresponde ao saldo disponível</li>
+                                    <li>Para itens divergentes: registre entradas faltantes ou corrija registros de saída</li>
+                                    <li>Realize contagem física para confirmar os saldos reais</li>
+                                </ul>
+                            </li>
+                            
+                            <li>
+                                <strong>Exporte o relatório de estoque:</strong>
+                                <p>
+                                    Após resolver todas as divergências, exporte o relatório final para documentação e prestação de contas.
+                                </p>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2>Exemplos Práticos</h2>
+                    
+                    <div class="instrucoes-section">
+                        <h3>Exemplo de Conciliação Financeira</h3>
+                        
+                        <div class="exemplo-card">
+                            <h4>Cenário:</h4>
+                            <p>O Instituto registrou uma doação de R$ 5.000,00 via PIX no dia 10/05, mas o extrato mostra um crédito de R$ 5.000,00 apenas no dia 12/05.</p>
+                            
+                            <h4>Resultado da conciliação:</h4>
+                            <p>O sistema marcará como <span class="status-tag status-conciliado"><i class="fas fa-check-circle"></i> Conciliado</span>, pois encontrou correspondência dentro da janela de ±3 dias, mas criará um gap de "diferença de data" para revisão.</p>
+                            
+                            <h4>Ação recomendada:</h4>
+                            <p>Verificar se a diferença de data é aceitável (compensação bancária normal) ou ajustar a data do lançamento interno para corresponder ao extrato.</p>
+                        </div>
+                        
+                        <div class="exemplo-card">
+                            <h4>Cenário:</h4>
+                            <p>O extrato mostra um débito de R$ 89,90 com descrição "TARIFA PACOTE MENSAL", mas não há lançamento correspondente no sistema.</p>
+                            
+                            <h4>Resultado da conciliação:</h4>
+                            <p>O sistema marcará como <span class="status-tag status-nao-identificado"><i class="fas fa-question-circle"></i> Não identificado</span> e criará um gap de "taxa bancária".</p>
+                            
+                            <h4>Ação recomendada:</h4>
+                            <p>Registrar esta taxa como despesa administrativa na categoria "Taxas Bancárias".</p>
+                        </div>
+                    </div>
+                    
+                    <div class="instrucoes-section">
+                        <h3>Exemplo de Conciliação de Bens</h3>
+                        
+                        <div class="exemplo-card">
+                            <h4>Cenário:</h4>
+                            <p>O Instituto recebeu 100 camisetas como doação e registrou a distribuição de 60 camisetas em um evento.</p>
+                            
+                            <h4>Resultado da conciliação:</h4>
+                            <p>O sistema marcará como <span class="status-tag status-pendente"><i class="fas fa-clock"></i> Pendente</span> com saldo de 40 camisetas disponíveis.</p>
+                            
+                            <h4>Ação recomendada:</h4>
+                            <p>Verificar se as 40 camisetas estão fisicamente no estoque. Se não estiverem, registrar a saída correspondente.</p>
+                        </div>
+                        
+                        <div class="exemplo-card">
+                            <h4>Cenário:</h4>
+                            <p>O sistema mostra a distribuição de 50 kits escolares, mas só há registro de entrada de 30 kits.</p>
+                            
+                            <h4>Resultado da conciliação:</h4>
+                            <p>O sistema marcará como <span class="status-tag status-divergente"><i class="fas fa-exclamation-triangle"></i> Divergente</span> com saldo negativo de 20 kits.</p>
+                            
+                            <h4>Ação recomendada:</h4>
+                            <p>Registrar a entrada dos 20 kits faltantes ou verificar se houve erro no registro de saída.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2>Dicas e Melhores Práticas</h2>
+                    
+                    <div class="instrucoes-grid">
+                        <div>
+                            <h3>Para Conciliação Financeira</h3>
+                            <ul>
+                                <li>Realize a conciliação pelo menos uma vez por mês</li>
+                                <li>Mantenha descrições detalhadas nos lançamentos</li>
+                                <li>Registre taxas bancárias assim que aparecerem no extrato</li>
+                                <li>Utilize categorias consistentes para facilitar a análise</li>
+                                <li>Documente justificativas para divergências não resolvidas</li>
+                                <li>Mantenha comprovantes de todas as transações</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3>Para Conciliação de Bens</h3>
+                            <ul>
+                                <li>Realize contagem física do estoque regularmente</li>
+                                <li>Registre entradas e saídas no momento em que ocorrem</li>
+                                <li>Padronize os nomes dos itens para evitar duplicidades</li>
+                                <li>Documente a origem de todas as doações recebidas</li>
+                                <li>Registre o destino de todas as distribuições</li>
+                                <li>Fotografe itens de maior valor para documentação</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="instrucao-card instrucao-card-blue">
+                        <h3><i class="fas fa-lightbulb"></i> Lembre-se</h3>
+                        <p>
+                            A conciliação não é apenas uma obrigação administrativa, mas uma ferramenta poderosa para garantir 
+                            a transparência e eficiência na gestão dos recursos do Instituto. Uma conciliação bem feita facilita 
+                            prestações de contas, auditorias e demonstra o compromisso da organização com a boa gestão dos recursos recebidos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Instituto Brasileiro Campeão - Sistema de Gestão Financeira</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</body>
+</html>

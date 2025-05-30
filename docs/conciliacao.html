@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conciliação - Instituto Brasileiro Campeão</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="conciliacao.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <!-- Cabeçalho -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="assets/logo.png" alt="Instituto Brasileiro Campeão" class="logo-img">
+            </div>
+            <h1>Sistema de Gestão Financeira</h1>
+            <div class="user-info">
+                <span class="user-name">Usuário</span>
+                <a href="#" class="logout-btn">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Menu de navegação -->
+    <nav class="main-nav">
+        <div class="container">
+            <ul class="nav-list">
+                <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+                <li><a href="entradas.html"><i class="fas fa-arrow-circle-down"></i> Entradas</a></li>
+                <li><a href="saidas.html"><i class="fas fa-arrow-circle-up"></i> Saídas</a></li>
+                <li><a href="conciliacao.html" class="active"><i class="fas fa-balance-scale"></i> Conciliação</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Conteúdo principal -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Abas de navegação -->
+            <div class="tabs">
+                <button class="tab-button active" data-tab="financeira">
+                    <i class="fas fa-money-bill-wave"></i> Financeira
+                </button>
+                <button class="tab-button" data-tab="bens">
+                    <i class="fas fa-box"></i> Bens
+                </button>
+                <button class="tab-button" data-tab="dashboard">
+                    <i class="fas fa-chart-pie"></i> Dashboard
+                </button>
+                <button class="tab-button" data-tab="instrucoes">
+                    <i class="fas fa-book"></i> Instruções
+                </button>
+            </div>
+
+            <!-- Conteúdo das abas -->
+            <div class="tab-content active" id="financeira">
+                <!-- Conteúdo da aba financeira -->
+                <h1 class="page-title"><i class="fas fa-money-bill-wave"></i> Conciliação Financeira</h1>
+                
+                <!-- Botões de importação -->
+                <div class="action-buttons">
+                    <button id="importar-entradas" class="btn btn-outline">
+                        <i class="fas fa-file-import"></i> Importar Entradas
+                    </button>
+                    <button id="importar-saidas" class="btn btn-outline">
+                        <i class="fas fa-file-import"></i> Importar Saídas
+                    </button>
+                    <button id="importar-extrato" class="btn btn-outline">
+                        <i class="fas fa-file-import"></i> Importar Extrato
+                    </button>
+                    <button id="exportar-relatorio-financeiro" class="btn btn-primary">
+                        <i class="fas fa-file-export"></i> Exportar Relatório
+                    </button>
+                </div>
+                
+                <!-- Resumo financeiro -->
+                <div class="resumo-cards" id="resumo-financeiro">
+                    <!-- Cards serão inseridos via JavaScript -->
+                </div>
+                
+                <!-- Filtros -->
+                <div class="filtros-container">
+                    <h3><i class="fas fa-filter"></i> Filtros</h3>
+                    <div class="filtros-grid">
+                        <div class="filtro-item">
+                            <label for="data-inicial-financeiro">Data Inicial</label>
+                            <input type="date" id="data-inicial-financeiro" class="form-control">
+                        </div>
+                        <div class="filtro-item">
+                            <label for="data-final-financeiro">Data Final</label>
+                            <input type="date" id="data-final-financeiro" class="form-control">
+                        </div>
+                        <div class="filtro-item">
+                            <label for="status-filtro-financeiro">Status</label>
+                            <select id="status-filtro-financeiro" class="form-control">
+                                <option value="Todos">Todos os Status</option>
+                                <option value="conciliado">Conciliado</option>
+                                <option value="pendente">Pendente</option>
+                                <option value="divergente">Divergente</option>
+                                <option value="nao_identificado">Não Identificado</option>
+                            </select>
+                        </div>
+                        <div class="filtro-item">
+                            <label for="busca-financeiro">Buscar</label>
+                            <input type="text" id="busca-financeiro" class="form-control" placeholder="Buscar descrição...">
+                        </div>
+                        <div class="filtro-item filtro-botao">
+                            <button id="aplicar-filtros-financeiro" class="btn btn-primary">
+                                <i class="fas fa-filter"></i> Aplicar Filtros
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tabelas de conciliação -->
+                <div class="conciliacao-tables">
+                    <div class="table-container">
+                        <h3>Lançamentos Internos</h3>
+                        <div class="table-responsive">
+                            <table id="tabela-lancamentos">
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Descrição</th>
+                                        <th>Valor</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dados serão inseridos via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <h3>Extrato Bancário</h3>
+                        <div class="table-responsive">
+                            <table id="tabela-extrato">
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Descrição</th>
+                                        <th>Valor</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dados serão inseridos via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Divergências e Gaps -->
+                <div class="gaps-container">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Divergências e Gaps</h3>
+                    <div class="table-responsive">
+                        <table id="tabela-gaps-financeiro">
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Valor</th>
+                                    <th>Data</th>
+                                    <th>Status</th>
+                                    <th>Instrução</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dados serão inseridos via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Status de Conciliação -->
+                <div class="status-conciliacao" id="status-conciliacao-financeira">
+                    <!-- Conteúdo será inserido via JavaScript -->
+                </div>
+            </div>
+
+            <div class="tab-content" id="bens">
+                <!-- Conteúdo da aba de bens -->
+                <h1 class="page-title"><i class="fas fa-box"></i> Conciliação de Bens</h1>
+                
+                <!-- Botões de importação -->
+                <div class="action-buttons">
+                    <button id="importar-estoque-entradas" class="btn btn-outline">
+                        <i class="fas fa-file-import"></i> Importar Entradas
+                    </button>
+                    <button id="importar-estoque-saidas" class="btn btn-outline">
+                        <i class="fas fa-file-import"></i> Importar Saídas
+                    </button>
+                    <button id="exportar-relatorio-bens" class="btn btn-primary">
+                        <i class="fas fa-file-export"></i> Exportar Relatório
+                    </button>
+                </div>
+                
+                <!-- Resumo de bens -->
+                <div class="resumo-cards" id="resumo-bens">
+                    <!-- Cards serão inseridos via JavaScript -->
+                </div>
+                
+                <!-- Filtros -->
+                <div class="filtros-container">
+                    <h3><i class="fas fa-filter"></i> Filtros</h3>
+                    <div class="filtros-grid">
+                        <div class="filtro-item">
+                            <label for="data-inicial-bens">Data Inicial</label>
+                            <input type="date" id="data-inicial-bens" class="form-control">
+                        </div>
+                        <div class="filtro-item">
+                            <label for="data-final-bens">Data Final</label>
+                            <input type="date" id="data-final-bens" class="form-control">
+                        </div>
+                        <div class="filtro-item">
+                            <label for="status-filtro-bens">Status</label>
+                            <select id="status-filtro-bens" class="form-control">
+                                <option value="Todos">Todos os Status</option>
+                                <option value="conciliado">Conciliado</option>
+                                <option value="pendente">Pendente</option>
+                                <option value="divergente">Divergente</option>
+                            </select>
+                        </div>
+                        <div class="filtro-item">
+                            <label for="busca-bens">Buscar Item</label>
+                            <input type="text" id="busca-bens" class="form-control" placeholder="Buscar item...">
+                        </div>
+                        <div class="filtro-item filtro-botao">
+                            <button id="aplicar-filtros-bens" class="btn btn-primary">
+                                <i class="fas fa-filter"></i> Aplicar Filtros
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tabelas de conciliação -->
+                <div class="conciliacao-tables">
+                    <div class="table-container">
+                        <h3>Entradas de Estoque</h3>
+                        <div class="table-responsive">
+                            <table id="tabela-estoque-entradas">
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Item</th>
+                                        <th>Quantidade</th>
+                                        <th>Origem</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dados serão inseridos via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <h3>Saídas de Estoque</h3>
+                        <div class="table-responsive">
+                            <table id="tabela-estoque-saidas">
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Item</th>
+                                        <th>Quantidade</th>
+                                        <th>Destino</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dados serão inseridos via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Saldo de Estoque -->
+                <div class="saldo-estoque-container">
+                    <h3><i class="fas fa-warehouse"></i> Saldo de Estoque</h3>
+                    <div class="table-responsive">
+                        <table id="tabela-saldo-estoque">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Entradas</th>
+                                    <th>Saídas</th>
+                                    <th>Saldo</th>
+                                    <th>Status</th>
+                                    <th>Observação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dados serão inseridos via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Status de Conciliação -->
+                <div class="status-conciliacao" id="status-conciliacao-bens">
+                    <!-- Conteúdo será inserido via JavaScript -->
+                </div>
+            </div>
+
+            <div class="tab-content" id="dashboard">
+                <!-- Conteúdo do dashboard -->
+                <h1 class="page-title"><i class="fas fa-chart-pie"></i> Dashboard de Conciliação</h1>
+                
+                <!-- Seletor de período -->
+                <div class="periodo-container">
+                    <h3>Período da Conciliação</h3>
+                    <div class="periodo-grid">
+                        <div class="periodo-item">
+                            <label for="data-inicial-dashboard">Data Inicial</label>
+                            <input type="date" id="data-inicial-dashboard" class="form-control">
+                        </div>
+                        <div class="periodo-item">
+                            <label for="data-final-dashboard">Data Final</label>
+                            <input type="date" id="data-final-dashboard" class="form-control">
+                        </div>
+                        <div class="periodo-item periodo-botao">
+                            <button id="atualizar-periodo" class="btn btn-primary">
+                                <i class="fas fa-sync-alt"></i> Atualizar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Resumo Financeiro e de Bens -->
+                <div class="dashboard-grid">
+                    <!-- Conciliação Financeira -->
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-money-bill-wave"></i> Conciliação Financeira</h3>
+                        <div class="grafico-container" id="grafico-financeiro">
+                            <!-- Gráfico será inserido via JavaScript -->
+                        </div>
+                        <div class="dashboard-stats" id="stats-financeiro">
+                            <!-- Estatísticas serão inseridas via JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Conciliação de Bens -->
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-box"></i> Conciliação de Bens</h3>
+                        <div class="grafico-container" id="grafico-bens">
+                            <!-- Gráfico será inserido via JavaScript -->
+                        </div>
+                        <div class="dashboard-stats" id="stats-bens">
+                            <!-- Estatísticas serão inseridas via JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Top Divergências -->
+                <div class="top-divergencias">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Top Divergências</h3>
+                    <div class="table-responsive">
+                        <table id="tabela-top-divergencias">
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Valor/Qtd</th>
+                                    <th>Status</th>
+                                    <th>Impacto</th>
+                                    <th>Instrução</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dados serão inseridos via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Progresso da Conciliação -->
+                <div class="progresso-conciliacao" id="progresso-conciliacao">
+                    <!-- Conteúdo será inserido via JavaScript -->
+                </div>
+            </div>
+
+            <div class="tab-content" id="instrucoes">
+                <!-- Conteúdo das instruções -->
+                <h1 class="page-title"><i class="fas fa-book"></i> Instruções de Conciliação</h1>
+                
+                <div class="instrucoes-container">
+                    <div class="card">
+                        <h2>O que é Conciliação?</h2>
+                        
+                        <p>
+                            A <strong>conciliação</strong> é o processo de verificar se os registros internos do Instituto estão alinhados com os registros externos (como extratos bancários) 
+                            ou com a realidade física (como o estoque de materiais). Este processo é fundamental para garantir a transparência, 
+                            precisão e confiabilidade das prestações de contas.
+                        </p>
+                        
+                        <div class="instrucoes-grid">
+                            <div class="instrucao-card instrucao-card-blue">
+                                <h3><i class="fas fa-money-bill-wave"></i> Conciliação Financeira</h3>
+                                <p>
+                                    Verifica se os lançamentos financeiros registrados no sistema (entradas e saídas) correspondem 
+                                    aos lançamentos do extrato bancário, garantindo que todo dinheiro que entrou ou saiu foi 
+                                    devidamente registrado e categorizado.
+                                </p>
+                            </div>
+                            
+                            <div class="instrucao-card instrucao-card-green">
+                                <h3><i class="fas fa-box"></i> Conciliação de Bens</h3>
+                                <p>
+                                    Verifica se os registros de entrada e saída de materiais (doações físicas, equipamentos, etc.) 
+                                    estão corretos, garantindo que todo material recebido foi devidamente registrado e que as 
+                                    distribuições correspondem ao que foi recebido.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="instrucao-card instrucao-card-yellow">
+                            <h3><i class="fas fa-exclamation-circle"></i> Por que é importante?</h3>
+                            <ul>
+                                <li>Garante transparência na prestação de contas</li>
+                                <li>Identifica erros, omissões ou fraudes</li>
+                                <li>Assegura que todos os recursos foram utilizados conforme planejado</li>
+                                <li>Facilita auditorias e fiscalizações</li>
+                                <li>Melhora a gestão financeira e de recursos do Instituto</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h2>Como Realizar a Conciliação</h2>
+                        
+                        <div class="instrucoes-section">
+                            <h3>Conciliação Financeira</h3>
+                            
+                            <ol>
+                                <li>
+                                    <strong>Importe os dados necessários:</strong>
+                                    <ul>
+                                        <li>Registros de entradas financeiras (doações recebidas)</li>
+                                        <li>Registros de saídas financeiras (pagamentos realizados)</li>
+                                        <li>Extrato bancário (exportado do seu banco)</li>
+                                    </ul>
+                                </li>
+                                
+                                <li>
+                                    <strong>Analise o resultado da conciliação automática:</strong>
+                                    <ul>
+                                        <li><span class="status-tag status-conciliado"><i class="fas fa-check-circle"></i> Conciliado:</span> Lançamentos que possuem correspondência exata no extrato</li>
+                                        <li><span class="status-tag status-pendente"><i class="fas fa-clock"></i> Pendente:</span> Lançamentos internos sem correspondência no extrato</li>
+                                        <li><span class="status-tag status-divergente"><i class="fas fa-exclamation-triangle"></i> Divergente:</span> Lançamentos com valores diferentes entre sistema e extrato</li>
+                                        <li><span class="status-tag status-nao-identificado"><i class="fas fa-question-circle"></i> Não identificado:</span> Lançamentos no extrato sem registro interno</li>
+                                    </ul>
+                                </li>
+                                
+                                <li>
+                                    <strong>Resolva as divergências:</strong>
+                                    <ul>
+                                        <li>Para lançamentos pendentes: verifique se o pagamento/recebimento foi realmente efetivado</li>
+                                        <li>Para lançamentos não identificados: registre-os no sistema interno</li>
+                                        <li>Para taxas bancárias: registre-as como despesas administrativas</li>
+                                        <li>Para divergências de valor: corrija o valor no sistema interno</li>
+                                    </ul>
+                                </li>
+                                
+                                <li>
+                                    <strong>Exporte o relatório de conciliação:</strong>
+                                    <p>
+                                        Após resolver todas as divergências, exporte o relatório final para documentação e prestação de contas.
+                                    </p>
+                                </li>
+                            </ol>
+                        </div>
+                        
+                        <div class="instrucoes-section">
+                            <h3>Conciliação de Bens</h3>
+                            
+                            <ol>
+                                <li>
+                                    <strong>Importe os dados de estoque:</strong>
+                                    <ul>
+                                        <li>Registros de entradas de materiais (doações recebidas)</li>
+                                        <li>Registros de saídas de materiais (distribuições realizadas)</li>
+                                    </ul>
+                                </li>
+                                
+                                <li>
+                                    <strong>Analise o resultado da conciliação automática:</strong>
+                                    <ul>
+                                        <li><span class="status-tag status-conciliado"><i class="fas fa-check-circle"></i> Conciliado:</span> Itens com entradas e saídas balanceadas</li>
+                                        <li><span class="status-tag status-pendente"><i class="fas fa-clock"></i> Pendente:</span> Itens com mais entradas que saídas (estoque disponível)</li>
+                                        <li><span class="status-tag status-divergente"><i class="fas fa-exclamation-triangle"></i> Divergente:</span> Itens com mais saídas que entradas (saldo negativo)</li>
+                                    </ul>
+                                </li>
+                                
+                                <li>
+                                    <strong>Resolva as divergências:</strong>
+                                    <ul>
+                                        <li>Para itens pendentes: verifique se o estoque físico corresponde ao saldo disponível</li>
+                                        <li>Para itens divergentes: registre entradas faltantes ou corrija registros de saída</li>
+                                        <li>Realize contagem física para confirmar os saldos reais</li>
+                                    </ul>
+                                </li>
+                                
+                                <li>
+                                    <strong>Exporte o relatório de estoque:</strong>
+                                    <p>
+                                        Após resolver todas as divergências, exporte o relatório final para documentação e prestação de contas.
+                                    </p>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h2>Exemplos Práticos</h2>
+                        
+                        <div class="instrucoes-section">
+                            <h3>Exemplo de Conciliação Financeira</h3>
+                            
+                            <div class="exemplo-card">
+                                <h4>Cenário:</h4>
+                                <p>O Instituto registrou uma doação de R$ 5.000,00 via PIX no dia 10/05, mas o extrato mostra um crédito de R$ 5.000,00 apenas no dia 12/05.</p>
+                                
+                                <h4>Resultado da conciliação:</h4>
+                                <p>O sistema marcará como <span class="status-tag status-conciliado"><i class="fas fa-check-circle"></i> Conciliado</span>, pois encontrou correspondência dentro da janela de ±3 dias, mas criará um gap de "diferença de data" para revisão.</p>
+                                
+                                <h4>Ação recomendada:</h4>
+                                <p>Verificar se a diferença de data é aceitável (compensação bancária normal) ou ajustar a data do lançamento interno para corresponder ao extrato.</p>
+                            </div>
+                            
+                            <div class="exemplo-card">
+                                <h4>Cenário:</h4>
+                                <p>O extrato mostra um débito de R$ 89,90 com descrição "TARIFA PACOTE MENSAL", mas não há lançamento correspondente no sistema.</p>
+                                
+                                <h4>Resultado da conciliação:</h4>
+                                <p>O sistema marcará como <span class="status-tag status-nao-identificado"><i class="fas fa-question-circle"></i> Não identificado</span> e criará um gap de "taxa bancária".</p>
+                                
+                                <h4>Ação recomendada:</h4>
+                                <p>Registrar esta taxa como despesa administrativa na categoria "Taxas Bancárias".</p>
+                            </div>
+                        </div>
+                        
+                        <div class="instrucoes-section">
+                            <h3>Exemplo de Conciliação de Bens</h3>
+                            
+                            <div class="exemplo-card">
+                                <h4>Cenário:</h4>
+                                <p>O Instituto recebeu 100 camisetas como doação e registrou a distribuição de 60 camisetas em um evento.</p>
+                                
+                                <h4>Resultado da conciliação:</h4>
+                                <p>O sistema marcará como <span class="status-tag status-pendente"><i class="fas fa-clock"></i> Pendente</span> com saldo de 40 camisetas disponíveis.</p>
+                                
+                                <h4>Ação recomendada:</h4>
+                                <p>Verificar se as 40 camisetas estão fisicamente no estoque. Se não estiverem, registrar a saída correspondente.</p>
+                            </div>
+                            
+                            <div class="exemplo-card">
+                                <h4>Cenário:</h4>
+                                <p>O sistema mostra a distribuição de 50 kits escolares, mas só há registro de entrada de 30 kits.</p>
+                                
+                                <h4>Resultado da conciliação:</h4>
+                                <p>O sistema marcará como <span class="status-tag status-divergente"><i class="fas fa-exclamation-triangle"></i> Divergente</span> com saldo negativo de 20 kits.</p>
+                                
+                                <h4>Ação recomendada:</h4>
+                                <p>Registrar a entrada dos 20 kits faltantes ou verificar se houve erro no registro de saída.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h2>Dicas e Melhores Práticas</h2>
+                        
+                        <div class="instrucoes-grid">
+                            <div>
+                                <h3>Para Conciliação Financeira</h3>
+                                <ul>
+                                    <li>Realize a conciliação pelo menos uma vez por mês</li>
+                                    <li>Mantenha descrições detalhadas nos lançamentos</li>
+                                    <li>Registre taxas bancárias assim que aparecerem no extrato</li>
+                                    <li>Utilize categorias consistentes para facilitar a análise</li>
+                                    <li>Documente justificativas para divergências não resolvidas</li>
+                                    <li>Mantenha comprovantes de todas as transações</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3>Para Conciliação de Bens</h3>
+                                <ul>
+                                    <li>Realize contagem física do estoque regularmente</li>
+                                    <li>Registre entradas e saídas no momento em que ocorrem</li>
+                                    <li>Padronize os nomes dos itens para evitar duplicidades</li>
+                                    <li>Documente a origem de todas as doações recebidas</li>
+                                    <li>Registre o destino de todas as distribuições</li>
+                                    <li>Fotografe itens de maior valor para documentação</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="instrucao-card instrucao-card-blue">
+                            <h3><i class="fas fa-lightbulb"></i> Lembre-se</h3>
+                            <p>
+                                A conciliação não é apenas uma obrigação administrativa, mas uma ferramenta poderosa para garantir 
+                                a transparência e eficiência na gestão dos recursos do Instituto. Uma conciliação bem feita facilita 
+                                prestações de contas, auditorias e demonstra o compromisso da organização com a boa gestão dos recursos recebidos.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Instituto Brasileiro Campeão - Sistema de Gestão Financeira</p>
+        </div>
+    </footer>
+
+    <!-- Modal de importação -->
+    <div id="modal-importacao" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modal-title">Importar Dados</h2>
+            
+            <div class="modal-body">
+                <!-- Conteúdo do modal será inserido via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="conciliacao.js"></script>
+</body>
+</html>

@@ -1,15 +1,888 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="./vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>instituto-brasileiro-campeao</title>
+    <title>Instituto Brasileiro Campeão - Sistema de Gestão Financeira</title>
     <script type="module" crossorigin src="./assets/index-DFYce-5x.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-CbrQtHeP.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Bibliotecas para o módulo de conciliação -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
   </head>
   <body>
-    <div id="root"></div>
+    <header class="header">
+      <div class="container">
+        <div class="logo">
+          <img src="./assets/logo-CUdix475.png" alt="Instituto Brasileiro Campeão" class="logo-img">
+          <div class="logo-text">
+            <h1>Sistema de Gestão Financeira</h1>
+            <p>Instituto Brasileiro Campeão</p>
+          </div>
+        </div>
+        <div class="header-right">
+          <p class="slogan">Fazendo o presente pensando no futuro</p>
+          <p class="version">Versão 1.0 | Protegido com senha: campeao</p>
+          <div class="header-buttons">
+            <button id="btnBackup" class="btn btn-outline-light">
+              <i class="fas fa-download"></i> Backup
+            </button>
+            <button id="btnNovoMes" class="btn btn-light">
+              <i class="fas fa-calendar-plus"></i> Novo Mês
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <nav class="main-nav">
+      <div class="container">
+        <ul class="nav-list">
+          <li><a href="#instrucoes" class="nav-link" data-page="instrucoes"><i class="fas fa-info-circle"></i> Instruções</a></li>
+          <li><a href="#entradas" class="nav-link" data-page="entradas"><i class="fas fa-arrow-circle-down"></i> Entradas</a></li>
+          <li><a href="#saidas" class="nav-link" data-page="saidas"><i class="fas fa-arrow-circle-up"></i> Saídas</a></li>
+          <li><a href="#conciliacao" class="nav-link" data-page="conciliacao"><i class="fas fa-balance-scale"></i> Conciliação</a></li>
+          <li><a href="#dashboard" class="nav-link" data-page="dashboard"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main id="main-content" class="container">
+      <!-- Conteúdo dinâmico será carregado aqui -->
+      <div id="page-instrucoes" class="page-content">
+        <h2><i class="fas fa-info-circle"></i> Instruções de Uso</h2>
+        <div class="card">
+          <div class="card-body">
+            <h3>Bem-vindo ao Sistema de Gestão Financeira</h3>
+            <p>Este sistema foi desenvolvido para auxiliar na gestão financeira do Instituto Brasileiro Campeão.</p>
+            
+            <h4>Funcionalidades Principais:</h4>
+            <ul>
+              <li><strong>Entradas:</strong> Registre todas as doações e receitas recebidas.</li>
+              <li><strong>Saídas:</strong> Controle os gastos e repasses realizados.</li>
+              <li><strong>Conciliação:</strong> Compare os registros internos com o extrato bancário e controle o estoque de bens.</li>
+              <li><strong>Dashboard:</strong> Visualize relatórios e gráficos para análise financeira.</li>
+            </ul>
+            
+            <h4>Como Navegar:</h4>
+            <p>Utilize o menu superior para acessar as diferentes áreas do sistema.</p>
+            
+            <h4>Backup e Segurança:</h4>
+            <p>Recomendamos realizar backups periódicos utilizando o botão "Backup" no canto superior direito.</p>
+            
+            <h4>Novo Mês:</h4>
+            <p>Ao iniciar um novo mês, utilize o botão "Novo Mês" para preparar o sistema para o novo período.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2025 Instituto Brasileiro Campeão - Todos os direitos reservados</p>
+      </div>
+    </footer>
+
+    <!-- Scripts para navegação e funcionalidades básicas -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Autenticação
+        const isAuthenticated = localStorage.getItem('auth') === 'true';
+        if (!isAuthenticated) {
+          showLoginModal();
+        }
+        
+        // Navegação
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pages = document.querySelectorAll('.page-content');
+        
+        // Mostrar página inicial ou última visitada
+        const lastPage = localStorage.getItem('lastPage') || 'instrucoes';
+        showPage(lastPage);
+        
+        // Configurar eventos de navegação
+        navLinks.forEach(link => {
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const page = this.getAttribute('data-page');
+            showPage(page);
+            localStorage.setItem('lastPage', page);
+          });
+        });
+        
+        // Botões do header
+        document.getElementById('btnBackup').addEventListener('click', function() {
+          showBackupModal();
+        });
+        
+        document.getElementById('btnNovoMes').addEventListener('click', function() {
+          showNovoMesModal();
+        });
+        
+        // Função para mostrar página
+        function showPage(pageId) {
+          // Ocultar todas as páginas
+          document.querySelectorAll('.page-content').forEach(page => {
+            page.style.display = 'none';
+          });
+          
+          // Remover classe ativa de todos os links
+          document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+          });
+          
+          // Mostrar página selecionada
+          const pageElement = document.getElementById('page-' + pageId);
+          if (pageElement) {
+            pageElement.style.display = 'block';
+          } else {
+            // Se a página não existir no DOM, carregá-la dinamicamente
+            loadPageContent(pageId);
+          }
+          
+          // Marcar link como ativo
+          const activeLink = document.querySelector(`.nav-link[data-page="${pageId}"]`);
+          if (activeLink) {
+            activeLink.classList.add('active');
+          }
+        }
+        
+        // Função para carregar conteúdo dinamicamente
+        function loadPageContent(pageId) {
+          const mainContent = document.getElementById('main-content');
+          
+          // Criar elemento para a nova página
+          const pageElement = document.createElement('div');
+          pageElement.id = 'page-' + pageId;
+          pageElement.className = 'page-content';
+          
+          switch(pageId) {
+            case 'entradas':
+              loadEntradasPage(pageElement);
+              break;
+            case 'saidas':
+              loadSaidasPage(pageElement);
+              break;
+            case 'conciliacao':
+              loadConciliacaoPage(pageElement);
+              break;
+            case 'dashboard':
+              loadDashboardPage(pageElement);
+              break;
+            default:
+              pageElement.innerHTML = '<h2>Página não encontrada</h2>';
+          }
+          
+          mainContent.appendChild(pageElement);
+        }
+        
+        // Funções para carregar páginas específicas
+        function loadEntradasPage(element) {
+          element.innerHTML = `
+            <h2><i class="fas fa-arrow-circle-down"></i> Entradas</h2>
+            <div class="actions-bar">
+              <button class="btn btn-primary" id="btnNovaEntrada">
+                <i class="fas fa-plus"></i> Nova Entrada
+              </button>
+              <button class="btn btn-outline-primary" id="btnImportarEntradas">
+                <i class="fas fa-file-import"></i> Importar Excel
+              </button>
+              <button class="btn btn-outline-primary" id="btnExportarEntradas">
+                <i class="fas fa-file-export"></i> Exportar Excel
+              </button>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Data</th>
+                        <th>Descrição</th>
+                        <th>Categoria</th>
+                        <th>Valor</th>
+                        <th>Método</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody id="entradas-table-body">
+                      <!-- Dados serão carregados dinamicamente -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          `;
+          
+          // Carregar dados e configurar eventos
+          setTimeout(() => {
+            carregarEntradas();
+            configurarEventosEntradas();
+          }, 100);
+        }
+        
+        function loadSaidasPage(element) {
+          element.innerHTML = `
+            <h2><i class="fas fa-arrow-circle-up"></i> Saídas</h2>
+            <div class="actions-bar">
+              <button class="btn btn-primary" id="btnNovaSaida">
+                <i class="fas fa-plus"></i> Nova Saída
+              </button>
+              <button class="btn btn-outline-primary" id="btnImportarSaidas">
+                <i class="fas fa-file-import"></i> Importar Excel
+              </button>
+              <button class="btn btn-outline-primary" id="btnExportarSaidas">
+                <i class="fas fa-file-export"></i> Exportar Excel
+              </button>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Data</th>
+                        <th>Descrição</th>
+                        <th>Categoria</th>
+                        <th>Valor</th>
+                        <th>Método</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody id="saidas-table-body">
+                      <!-- Dados serão carregados dinamicamente -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          `;
+          
+          // Carregar dados e configurar eventos
+          setTimeout(() => {
+            carregarSaidas();
+            configurarEventosSaidas();
+          }, 100);
+        }
+        
+        function loadConciliacaoPage(element) {
+          // Carregar o módulo de conciliação completo
+          fetch('./docs/conciliacao.html')
+            .then(response => response.text())
+            .then(html => {
+              // Extrair apenas o conteúdo principal (sem header, nav, etc)
+              const parser = new DOMParser();
+              const doc = parser.parseFromString(html, 'text/html');
+              const mainContent = doc.querySelector('main') || doc.querySelector('.container') || doc.body;
+              
+              // Adicionar título e conteúdo
+              element.innerHTML = `
+                <h2><i class="fas fa-balance-scale"></i> Conciliação</h2>
+                <div id="conciliacao-container">
+                  ${mainContent.innerHTML}
+                </div>
+              `;
+              
+              // Carregar scripts necessários
+              loadScript('./docs/algoritmos-conciliacao.js')
+                .then(() => loadScript('./docs/renderizacao-conciliacao.js'))
+                .then(() => loadScript('./docs/exportacao-excel.js'))
+                .then(() => loadScript('./docs/integracao-conciliacao.js'))
+                .then(() => loadScript('./docs/conciliacao.js'))
+                .then(() => {
+                  // Inicializar o módulo de conciliação
+                  if (typeof inicializarModuloConciliacao === 'function') {
+                    inicializarModuloConciliacao();
+                  }
+                })
+                .catch(error => console.error('Erro ao carregar scripts de conciliação:', error));
+              
+              // Adicionar estilos
+              const link = document.createElement('link');
+              link.rel = 'stylesheet';
+              link.href = './docs/conciliacao.css';
+              document.head.appendChild(link);
+            })
+            .catch(error => {
+              console.error('Erro ao carregar página de conciliação:', error);
+              element.innerHTML = `
+                <h2><i class="fas fa-balance-scale"></i> Conciliação</h2>
+                <div class="alert alert-danger">
+                  Erro ao carregar o módulo de conciliação. Por favor, tente novamente.
+                </div>
+              `;
+            });
+        }
+        
+        function loadDashboardPage(element) {
+          element.innerHTML = `
+            <h2><i class="fas fa-chart-bar"></i> Dashboard</h2>
+            <div class="dashboard-container">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-header">
+                      <h3>Resumo Financeiro</h3>
+                    </div>
+                    <div class="card-body">
+                      <div id="resumo-financeiro">
+                        <!-- Dados serão carregados dinamicamente -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-header">
+                      <h3>Entradas vs Saídas</h3>
+                    </div>
+                    <div class="card-body">
+                      <canvas id="chart-entradas-saidas"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-header">
+                      <h3>Entradas por Categoria</h3>
+                    </div>
+                    <div class="card-body">
+                      <canvas id="chart-entradas-categoria"></canvas>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-header">
+                      <h3>Saídas por Categoria</h3>
+                    </div>
+                    <div class="card-body">
+                      <canvas id="chart-saidas-categoria"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+          
+          // Carregar dados e configurar gráficos
+          setTimeout(() => {
+            carregarDashboard();
+          }, 100);
+        }
+        
+        // Função para carregar script dinamicamente
+        function loadScript(src) {
+          return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = resolve;
+            script.onerror = reject;
+            document.body.appendChild(script);
+          });
+        }
+        
+        // Funções para carregar dados
+        function carregarEntradas() {
+          const entradas = JSON.parse(localStorage.getItem('entradas')) || [];
+          const tableBody = document.getElementById('entradas-table-body');
+          
+          if (tableBody) {
+            tableBody.innerHTML = '';
+            
+            if (entradas.length === 0) {
+              tableBody.innerHTML = `
+                <tr>
+                  <td colspan="6" class="text-center">Nenhuma entrada registrada</td>
+                </tr>
+              `;
+              return;
+            }
+            
+            entradas.forEach((entrada, index) => {
+              const tr = document.createElement('tr');
+              tr.innerHTML = `
+                <td>${formatarData(entrada.data)}</td>
+                <td>${entrada.descricao}</td>
+                <td>${entrada.categoria}</td>
+                <td class="text-right">${formatarValor(entrada.valor)}</td>
+                <td>${entrada.metodo}</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-primary btn-editar" data-index="${index}">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger btn-excluir" data-index="${index}">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              `;
+              tableBody.appendChild(tr);
+            });
+          }
+        }
+        
+        function carregarSaidas() {
+          const saidas = JSON.parse(localStorage.getItem('saidas')) || [];
+          const tableBody = document.getElementById('saidas-table-body');
+          
+          if (tableBody) {
+            tableBody.innerHTML = '';
+            
+            if (saidas.length === 0) {
+              tableBody.innerHTML = `
+                <tr>
+                  <td colspan="6" class="text-center">Nenhuma saída registrada</td>
+                </tr>
+              `;
+              return;
+            }
+            
+            saidas.forEach((saida, index) => {
+              const tr = document.createElement('tr');
+              tr.innerHTML = `
+                <td>${formatarData(saida.data)}</td>
+                <td>${saida.descricao}</td>
+                <td>${saida.categoria}</td>
+                <td class="text-right">${formatarValor(saida.valor)}</td>
+                <td>${saida.metodo}</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-primary btn-editar" data-index="${index}">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger btn-excluir" data-index="${index}">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              `;
+              tableBody.appendChild(tr);
+            });
+          }
+        }
+        
+        function carregarDashboard() {
+          const entradas = JSON.parse(localStorage.getItem('entradas')) || [];
+          const saidas = JSON.parse(localStorage.getItem('saidas')) || [];
+          
+          // Calcular totais
+          const totalEntradas = entradas.reduce((total, entrada) => total + parseFloat(entrada.valor), 0);
+          const totalSaidas = saidas.reduce((total, saida) => total + parseFloat(saida.valor), 0);
+          const saldo = totalEntradas - totalSaidas;
+          
+          // Exibir resumo financeiro
+          const resumoFinanceiro = document.getElementById('resumo-financeiro');
+          if (resumoFinanceiro) {
+            resumoFinanceiro.innerHTML = `
+              <div class="resumo-item">
+                <span class="resumo-label">Total de Entradas:</span>
+                <span class="resumo-valor text-success">${formatarValor(totalEntradas)}</span>
+              </div>
+              <div class="resumo-item">
+                <span class="resumo-label">Total de Saídas:</span>
+                <span class="resumo-valor text-danger">${formatarValor(totalSaidas)}</span>
+              </div>
+              <div class="resumo-item">
+                <span class="resumo-label">Saldo Atual:</span>
+                <span class="resumo-valor ${saldo >= 0 ? 'text-success' : 'text-danger'}">${formatarValor(saldo)}</span>
+              </div>
+            `;
+          }
+          
+          // Criar gráficos
+          criarGraficoEntradasSaidas(entradas, saidas);
+          criarGraficoEntradasCategoria(entradas);
+          criarGraficoSaidasCategoria(saidas);
+        }
+        
+        // Funções para criar gráficos
+        function criarGraficoEntradasSaidas(entradas, saidas) {
+          const canvas = document.getElementById('chart-entradas-saidas');
+          if (!canvas) return;
+          
+          // Agrupar por mês
+          const meses = {};
+          
+          // Processar entradas
+          entradas.forEach(entrada => {
+            const data = new Date(entrada.data);
+            const mesAno = `${data.getMonth() + 1}/${data.getFullYear()}`;
+            
+            if (!meses[mesAno]) {
+              meses[mesAno] = { entradas: 0, saidas: 0 };
+            }
+            
+            meses[mesAno].entradas += parseFloat(entrada.valor);
+          });
+          
+          // Processar saídas
+          saidas.forEach(saida => {
+            const data = new Date(saida.data);
+            const mesAno = `${data.getMonth() + 1}/${data.getFullYear()}`;
+            
+            if (!meses[mesAno]) {
+              meses[mesAno] = { entradas: 0, saidas: 0 };
+            }
+            
+            meses[mesAno].saidas += parseFloat(saida.valor);
+          });
+          
+          // Ordenar meses
+          const mesesOrdenados = Object.keys(meses).sort((a, b) => {
+            const [mesA, anoA] = a.split('/');
+            const [mesB, anoB] = b.split('/');
+            
+            if (anoA !== anoB) {
+              return parseInt(anoA) - parseInt(anoB);
+            }
+            
+            return parseInt(mesA) - parseInt(mesB);
+          });
+          
+          // Criar dados para o gráfico
+          const labels = mesesOrdenados;
+          const dataEntradas = mesesOrdenados.map(mes => meses[mes].entradas);
+          const dataSaidas = mesesOrdenados.map(mes => meses[mes].saidas);
+          
+          // Criar gráfico
+          new Chart(canvas, {
+            type: 'bar',
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  label: 'Entradas',
+                  data: dataEntradas,
+                  backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                  borderColor: 'rgba(75, 192, 192, 1)',
+                  borderWidth: 1
+                },
+                {
+                  label: 'Saídas',
+                  data: dataSaidas,
+                  backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                  borderColor: 'rgba(255, 99, 132, 1)',
+                  borderWidth: 1
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              scales: {
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+          });
+        }
+        
+        function criarGraficoEntradasCategoria(entradas) {
+          const canvas = document.getElementById('chart-entradas-categoria');
+          if (!canvas) return;
+          
+          // Agrupar por categoria
+          const categorias = {};
+          
+          entradas.forEach(entrada => {
+            const categoria = entrada.categoria || 'Sem categoria';
+            
+            if (!categorias[categoria]) {
+              categorias[categoria] = 0;
+            }
+            
+            categorias[categoria] += parseFloat(entrada.valor);
+          });
+          
+          // Criar dados para o gráfico
+          const labels = Object.keys(categorias);
+          const data = Object.values(categorias);
+          
+          // Criar gráfico
+          new Chart(canvas, {
+            type: 'pie',
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  data: data,
+                  backgroundColor: [
+                    'rgba(75, 192, 192, 0.5)',
+                    'rgba(54, 162, 235, 0.5)',
+                    'rgba(153, 102, 255, 0.5)',
+                    'rgba(255, 159, 64, 0.5)',
+                    'rgba(255, 99, 132, 0.5)',
+                    'rgba(255, 205, 86, 0.5)'
+                  ],
+                  borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 205, 86, 1)'
+                  ],
+                  borderWidth: 1
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: 'right'
+                }
+              }
+            }
+          });
+        }
+        
+        function criarGraficoSaidasCategoria(saidas) {
+          const canvas = document.getElementById('chart-saidas-categoria');
+          if (!canvas) return;
+          
+          // Agrupar por categoria
+          const categorias = {};
+          
+          saidas.forEach(saida => {
+            const categoria = saida.categoria || 'Sem categoria';
+            
+            if (!categorias[categoria]) {
+              categorias[categoria] = 0;
+            }
+            
+            categorias[categoria] += parseFloat(saida.valor);
+          });
+          
+          // Criar dados para o gráfico
+          const labels = Object.keys(categorias);
+          const data = Object.values(categorias);
+          
+          // Criar gráfico
+          new Chart(canvas, {
+            type: 'pie',
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  data: data,
+                  backgroundColor: [
+                    'rgba(255, 99, 132, 0.5)',
+                    'rgba(255, 159, 64, 0.5)',
+                    'rgba(255, 205, 86, 0.5)',
+                    'rgba(75, 192, 192, 0.5)',
+                    'rgba(54, 162, 235, 0.5)',
+                    'rgba(153, 102, 255, 0.5)'
+                  ],
+                  borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 205, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(153, 102, 255, 1)'
+                  ],
+                  borderWidth: 1
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: 'right'
+                }
+              }
+            }
+          });
+        }
+        
+        // Funções para configurar eventos
+        function configurarEventosEntradas() {
+          const btnNovaEntrada = document.getElementById('btnNovaEntrada');
+          if (btnNovaEntrada) {
+            btnNovaEntrada.addEventListener('click', () => {
+              showEntradaModal();
+            });
+          }
+          
+          const btnImportarEntradas = document.getElementById('btnImportarEntradas');
+          if (btnImportarEntradas) {
+            btnImportarEntradas.addEventListener('click', () => {
+              showImportarModal('entradas');
+            });
+          }
+          
+          const btnExportarEntradas = document.getElementById('btnExportarEntradas');
+          if (btnExportarEntradas) {
+            btnExportarEntradas.addEventListener('click', () => {
+              exportarExcel('entradas');
+            });
+          }
+          
+          // Configurar botões de editar e excluir
+          const botoesEditar = document.querySelectorAll('#entradas-table-body .btn-editar');
+          botoesEditar.forEach(botao => {
+            botao.addEventListener('click', function() {
+              const index = this.getAttribute('data-index');
+              editarEntrada(index);
+            });
+          });
+          
+          const botoesExcluir = document.querySelectorAll('#entradas-table-body .btn-excluir');
+          botoesExcluir.forEach(botao => {
+            botao.addEventListener('click', function() {
+              const index = this.getAttribute('data-index');
+              excluirEntrada(index);
+            });
+          });
+        }
+        
+        function configurarEventosSaidas() {
+          const btnNovaSaida = document.getElementById('btnNovaSaida');
+          if (btnNovaSaida) {
+            btnNovaSaida.addEventListener('click', () => {
+              showSaidaModal();
+            });
+          }
+          
+          const btnImportarSaidas = document.getElementById('btnImportarSaidas');
+          if (btnImportarSaidas) {
+            btnImportarSaidas.addEventListener('click', () => {
+              showImportarModal('saidas');
+            });
+          }
+          
+          const btnExportarSaidas = document.getElementById('btnExportarSaidas');
+          if (btnExportarSaidas) {
+            btnExportarSaidas.addEventListener('click', () => {
+              exportarExcel('saidas');
+            });
+          }
+          
+          // Configurar botões de editar e excluir
+          const botoesEditar = document.querySelectorAll('#saidas-table-body .btn-editar');
+          botoesEditar.forEach(botao => {
+            botao.addEventListener('click', function() {
+              const index = this.getAttribute('data-index');
+              editarSaida(index);
+            });
+          });
+          
+          const botoesExcluir = document.querySelectorAll('#saidas-table-body .btn-excluir');
+          botoesExcluir.forEach(botao => {
+            botao.addEventListener('click', function() {
+              const index = this.getAttribute('data-index');
+              excluirSaida(index);
+            });
+          });
+        }
+        
+        // Funções de utilidade
+        function formatarData(dataString) {
+          if (!dataString) return '';
+          
+          try {
+            const data = new Date(dataString);
+            return data.toLocaleDateString('pt-BR');
+          } catch (error) {
+            return dataString;
+          }
+        }
+        
+        function formatarValor(valor) {
+          return parseFloat(valor).toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+          });
+        }
+        
+        // Funções para modais
+        function showLoginModal() {
+          const modal = document.createElement('div');
+          modal.className = 'modal';
+          modal.innerHTML = `
+            <div class="modal-content">
+              <div class="modal-header">
+                <h2>Login</h2>
+              </div>
+              <div class="modal-body">
+                <p>Digite a senha para acessar o sistema:</p>
+                <input type="password" id="senha" class="form-control" placeholder="Senha">
+              </div>
+              <div class="modal-footer">
+                <button id="btnLogin" class="btn btn-primary">Entrar</button>
+              </div>
+            </div>
+          `;
+          
+          document.body.appendChild(modal);
+          
+          document.getElementById('btnLogin').addEventListener('click', function() {
+            const senha = document.getElementById('senha').value;
+            
+            if (senha === 'campeao') {
+              localStorage.setItem('auth', 'true');
+              modal.remove();
+            } else {
+              alert('Senha incorreta!');
+            }
+          });
+        }
+        
+        function showBackupModal() {
+          alert('Funcionalidade de backup em desenvolvimento');
+        }
+        
+        function showNovoMesModal() {
+          alert('Funcionalidade de novo mês em desenvolvimento');
+        }
+        
+        function showEntradaModal(index) {
+          alert('Funcionalidade de nova entrada em desenvolvimento');
+        }
+        
+        function showSaidaModal(index) {
+          alert('Funcionalidade de nova saída em desenvolvimento');
+        }
+        
+        function showImportarModal(tipo) {
+          alert(`Funcionalidade de importar ${tipo} em desenvolvimento`);
+        }
+        
+        function editarEntrada(index) {
+          alert(`Editar entrada ${index}`);
+        }
+        
+        function excluirEntrada(index) {
+          if (confirm('Tem certeza que deseja excluir esta entrada?')) {
+            const entradas = JSON.parse(localStorage.getItem('entradas')) || [];
+            entradas.splice(index, 1);
+            localStorage.setItem('entradas', JSON.stringify(entradas));
+            carregarEntradas();
+          }
+        }
+        
+        function editarSaida(index) {
+          alert(`Editar saída ${index}`);
+        }
+        
+        function excluirSaida(index) {
+          if (confirm('Tem certeza que deseja excluir esta saída?')) {
+            const saidas = JSON.parse(localStorage.getItem('saidas')) || [];
+            saidas.splice(index, 1);
+            localStorage.setItem('saidas', JSON.stringify(saidas));
+            carregarSaidas();
+          }
+        }
+        
+        function exportarExcel(tipo) {
+          alert(`Exportar ${tipo} para Excel`);
+        }
+      });
+    </script>
   </body>
 </html>
